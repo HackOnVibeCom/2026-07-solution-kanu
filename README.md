@@ -17,7 +17,7 @@ Zero setup, one form, one click. Competitors require prompting skill and multipl
 The person lands on the page and sees the input form immediately, no scrolling. They fill in app name, one line description, target user, and store link, then click "Raise the curtain." They receive a structured four part launch package, App Store listing copy, social posts, a Product Hunt draft, and landing hero copy, revealed one section at a time, each with a one click copy button.
 
 ## Demo video
-[VIDEO_LINK_PLACEHOLDER]
+https://youtu.be/vV08ojJD5dw?si=kEfOOYY4IAFSIukq
 
 Fanfare, HackOnVibe July 2026
 
