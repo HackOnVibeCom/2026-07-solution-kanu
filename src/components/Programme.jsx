@@ -9,7 +9,7 @@ const ACT_META = [
   { number: 'ACT IV', title: 'The Marquee', flagFill: '#7B6FD6' },
 ]
 
-export default function Programme({ result, appName, onRevealComplete }) {
+export default function Programme({ result, appName, onRevealComplete, usedFallback }) {
   const sectionRef = useRef(null)
   const rootRefs = useRef([])
   const flagRefs = useRef([])
@@ -46,6 +46,10 @@ export default function Programme({ result, appName, onRevealComplete }) {
         <span className="programme-title">The Programme</span>
         <span className="programme-meta">{(appName || 'Your app') + ', opening night'}</span>
       </div>
+
+      {usedFallback && (
+        <p className="fallback-notice">Generated from a local template. The live API was temporarily unavailable.</p>
+      )}
 
       <Act
         {...ACT_META[0]}

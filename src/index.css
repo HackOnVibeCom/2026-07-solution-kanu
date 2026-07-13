@@ -314,6 +314,18 @@ h1 em{
   color: var(--orange-dim);
 }
 
+.fallback-notice{
+  margin: 18px 0 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--orange-dim);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 10px 14px;
+  background: rgba(226,87,43,0.06);
+}
+
 /* ---------- PROGRAMME ---------- */
 .programme{
   margin-top: 64px;

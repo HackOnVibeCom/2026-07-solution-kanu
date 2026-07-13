@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import Programme from './components/Programme'
 import { generateProgramme } from './lib/anthropic'
+import { buildLocalProgramme } from './lib/localFallback'
 
 const DEFAULT_VALUES = {
   appName: '',
@@ -16,6 +17,7 @@ export default function App() {
   const [status, setStatus] = useState('idle') // idle | loading | revealing | done | error
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
+  const [usedFallback, setUsedFallback] = useState(false)
 
   const handleChange = (field, value) => {
     setValues((prev) => ({ ...prev, [field]: value }))
@@ -27,14 +29,18 @@ export default function App() {
 
     setStatus('loading')
     setError('')
+    setUsedFallback(false)
 
     try {
       const programme = await generateProgramme(values)
       setResult(programme)
       setStatus('revealing')
     } catch (err) {
-      setError(err.message || 'Something went wrong. Try again.')
-      setStatus('error')
+      // live API failed, fall back to a local template built from the real inputs
+      console.warn('Gemini call failed, using local fallback:', err)
+      setResult(buildLocalProgramme(values))
+      setUsedFallback(true)
+      setStatus('revealing')
     }
   }
 
@@ -56,7 +62,14 @@ export default function App() {
           status={status}
           error={error}
         />
-        {result && <Programme result={result} appName={values.appName} onRevealComplete={handleRevealComplete} />}
+        {result && (
+          <Programme
+            result={result}
+            appName={values.appName}
+            onRevealComplete={handleRevealComplete}
+            usedFallback={usedFallback}
+          />
+        )}
       </main>
     </>
   )
