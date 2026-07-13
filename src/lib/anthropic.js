@@ -90,10 +90,11 @@ export async function generateProgramme(formValues) {
 
   let response
   try {
-    response = await fetch(`${API_URL}?key=${encodeURIComponent(apiKey)}`, {
+    response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
+        'x-goog-api-key': apiKey,
       },
       body: JSON.stringify({
         systemInstruction: {
