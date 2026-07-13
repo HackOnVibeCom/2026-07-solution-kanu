@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanfare: your launch, announced</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 1V15' stroke='%23E2572B' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z' fill='%237B6FD6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F0EEF3;
+    --paper-raised: #E8E5EE;
+    --ink: #1D1B22;
+    --ink-soft: #55515F;
+    --orange: #E2572B;
+    --orange-dim: #C74A22;
+    --lavender: #7B6FD6;
+    --lavender-dim: #6459BE;
+    --line: #D6D2DE;
+    --success: #3F6B4C;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* faint grain texture, no gradient wash */
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+
+  /* ---------- HEADER ---------- */
+  header{
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 28px 0;
+  }
+  .wordmark{
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .flag-mark{
+    width: 16px;
+    height: 16px;
+    flex-shrink:0;
+  }
+  .header-tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 3px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 88px 0 56px;
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-dim);
+    margin-bottom: 22px;
+    opacity: 0;
+    animation: rise 0.7s cubic-bezier(.2,.8,.2,1) 0.05s forwards;
+  }
+  h1{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 66px);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    max-width: 780px;
+    opacity: 0;
+    animation: rise 0.8s cubic-bezier(.2,.8,.2,1) 0.15s forwards;
+  }
+  h1 em{
+    font-style: italic;
+    color: var(--orange);
+    font-weight: 400;
+  }
+  .sub{
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin-top: 22px;
+    opacity: 0;
+    animation: rise 0.8s cubic-bezier(.2,.8,.2,1) 0.3s forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(14px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- FORM CARD ---------- */
+  .form-card{
+    margin-top: 44px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 32px;
+    box-shadow: 0 1px 0 #fff inset, 0 10px 0 -8px rgba(29,27,34,0.05), 0 18px 24px -18px rgba(29,27,34,0.28);
+    opacity: 0;
+    animation: rise 0.8s cubic-bezier(.2,.8,.2,1) 0.45s forwards;
+  }
+
+  /* ---------- TICKET VISUAL ---------- */
+  .ticket-stage{
+    display:flex;
+    justify-content: center;
+    margin: 64px 0 8px;
+  }
+  .ticket{
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    transform: rotate(-2.2deg);
+  }
+  .ticket::before,
+  .ticket::after{
+    content:"";
+    position:absolute;
+    inset: 0;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    z-index: -1;
+  }
+  .ticket::before{ transform: rotate(4.5deg) translateY(6px); z-index: -1; }
+  .ticket::after{ transform: rotate(8.5deg) translateY(12px); z-index: -2; background: var(--paper); }
+
+  .ticket-face{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 24px 40px -20px rgba(29,27,34,0.35), 0 2px 0 rgba(255,255,255,0.5) inset;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+  }
+  .ticket-main{
+    padding: 26px 24px;
+  }
+  .ticket-kicker{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-dim);
+    display:flex;
+    align-items:center;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .ticket-kicker svg{ width: 12px; height: 12px; }
+  .ticket-appname{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 27px;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .ticket-sub{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+  .ticket-stub{
+    border-left: 1px dashed #B9B3C6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position: relative;
+    padding: 12px 0;
+  }
+  .ticket-stub::before,
+  .ticket-stub::after{
+    content:"";
+    position:absolute;
+    width: 16px; height: 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    left: -9px;
+  }
+  .ticket-stub::before{ top: -9px; }
+  .ticket-stub::after{ bottom: -9px; }
+  .ticket-stub-text{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--lavender-dim);
+    writing-mode: vertical-rl;
+    text-transform: uppercase;
+  }
+  .form-card-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lavender-dim);
+    margin-bottom: 20px;
+    display:block;
+  }
+  .field-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .field{ display:flex; flex-direction:column; gap: 7px; }
+  .field.full{ grid-column: 1 / -1; }
+  .field label{
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .field input{
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.18s ease;
+  }
+  .field input:focus{
+    border-color: var(--lavender);
+  }
+  .field input::placeholder{ color: #A6A1B0; }
+
+  .submit-row{
+    display:flex;
+    align-items:center;
+    gap: 16px;
+    margin-top: 26px;
+  }
+  .btn-primary{
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--paper);
+    background: var(--orange);
+    border: none;
+    border-radius: 4px;
+    padding: 13px 24px;
+    cursor: pointer;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+    position: relative;
+  }
+  .btn-primary:hover{ background: var(--orange-dim); transform: translateY(-1px); }
+  .btn-primary:active{ transform: translateY(0); }
+  .btn-primary:focus-visible{ outline: 2px solid var(--lavender); outline-offset: 2px; }
+  .btn-primary[disabled]{ cursor: default; opacity: 0.75; }
+
+  .submit-hint{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+
+  .dots{
+    display:inline-flex;
+    gap: 3px;
+    margin-left: 8px;
+  }
+  .dots span{
+    width: 3px; height: 3px;
+    background: var(--paper);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: blink 1.1s ease-in-out infinite;
+  }
+  .dots span:nth-child(2){ animation-delay: 0.15s; }
+  .dots span:nth-child(3){ animation-delay: 0.3s; }
+  @keyframes blink{
+    0%, 80%, 100%{ opacity: 0.3; }
+    40%{ opacity: 1; }
+  }
+
+  /* ---------- PROGRAMME ---------- */
+  .programme{
+    margin-top: 64px;
+    padding-bottom: 100px;
+  }
+  .programme-head{
+    display:flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+    margin-bottom: 8px;
+  }
+  .programme-title{
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    font-style: italic;
+  }
+  .programme-meta{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .act{
+    border-bottom: 1px solid var(--line);
+    padding: 30px 0;
+    display:grid;
+    grid-template-columns: 160px 1fr;
+    gap: 28px;
+  }
+
+  .act-label-col{
+    display:flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .act-number{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--lavender-dim);
+  }
+  .act-flag{
+    width: 15px;
+    height: 15px;
+    transform-origin: 15% 100%;
+  }
+
+  .act-body-col h3{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 19px;
+    margin-bottom: 12px;
+  }
+  .act-content{
+    font-size: 14.5px;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 16px 18px;
+    white-space: pre-line;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 10px 18px -14px rgba(29,27,34,0.3);
+  }
+  .act-content .tag{
+    display:inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--lavender-dim);
+    background: rgba(123,111,214,0.1);
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  .act-footer{
+    display:flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  .copy-btn{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 7px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.18s ease, color 0.18s ease;
+  }
+  .copy-btn:hover{ border-color: var(--orange); color: var(--orange-dim); }
+  .copy-btn.copied{ border-color: var(--success); color: var(--success); }
+
+  @media (max-width: 680px){
+    .field-grid{ grid-template-columns: 1fr; }
+    .act{ grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 26px 0 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-social{
+    display:flex;
+    gap: 14px;
+  }
+  .footer-social a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink-soft);
+    transition: border-color 0.18s ease, color 0.18s ease;
+  }
+  .footer-social a:hover{
+    border-color: var(--orange);
+    color: var(--orange-dim);
+  }
+  .footer-social svg{ width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="wordmark">
+      <svg class="flag-mark" viewBox="0 0 16 16" fill="none">
+        <path d="M2 1V15" stroke="#E2572B" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#7B6FD6"/>
+      </svg>
+      Fanfare
+    </div>
+    <div class="header-tag">A programme for your launch</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Built for HackOnVibe, July 2026</div>
+    <h1>Your launch,<br><em>announced.</em></h1>
+    <p class="sub">Tell Fanfare what you built. It writes the store listing, the social debut, the launch post, and the landing copy. Everything that tells the world before you've had your coffee.</p>
+
+    <form class="form-card" id="launchForm">
+      <span class="form-card-label">The details</span>
+      <div class="field-grid">
+        <div class="field">
+          <label for="appName">App name</label>
+          <input id="appName" type="text" value="Driftnote" placeholder="e.g. Driftnote">
+        </div>
+        <div class="field">
+          <label for="target">Who it's for</label>
+          <input id="target" type="text" value="people who think out loud" placeholder="e.g. people who think out loud">
+        </div>
+        <div class="field full">
+          <label for="oneLiner">One-liner</label>
+          <input id="oneLiner" type="text" value="A voice journal that turns your rambling into a readable diary" placeholder="What does it actually do">
+        </div>
+        <div class="field full">
+          <label for="storeLink">Store link</label>
+          <input id="storeLink" type="text" value="apps.apple.com/driftnote" placeholder="apps.apple.com/yourapp">
+        </div>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn-primary" id="submitBtn">Raise the curtain</button>
+        <span class="submit-hint" id="hintText">Four acts. About ten seconds.</span>
+      </div>
+    </form>
+
+    <div class="ticket-stage">
+      <div class="ticket">
+        <div class="ticket-face">
+          <div class="ticket-main">
+            <div class="ticket-kicker">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M2 1V15" stroke="#E2572B" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#7B6FD6"/>
+              </svg>
+              Opening night pass
+            </div>
+            <div class="ticket-appname" id="ticketAppName">Driftnote</div>
+            <div class="ticket-sub">ACT I TO IV · FULL PROGRAMME · ONE PERFORMANCE ONLY</div>
+          </div>
+          <div class="ticket-stub">
+            <span class="ticket-stub-text">FANFARE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="programme" id="programme" style="display:none;">
+    <div class="programme-head">
+      <span class="programme-title">The Programme</span>
+      <span class="programme-meta" id="progMeta">Driftnote, opening night</span>
+    </div>
+
+    <div class="act" id="act1">
+      <div class="act-label-col">
+        <span class="act-number">ACT I</span>
+        <svg class="act-flag" viewBox="0 0 16 16" fill="none">
+          <path d="M2 1V15" stroke="#1D1B22" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#E2572B"/>
+        </svg>
+      </div>
+      <div class="act-body-col">
+        <h3>The Listing</h3>
+        <div class="act-content"><span class="tag">Title</span><span class="tag">Subtitle</span><span class="tag">Keywords</span>
+Driftnote: Voice Journal, Written For You
+Talk it out. Read it back. No typing required.
+Keywords: voice journal, audio diary, speech to text, daily reflection, mental clarity</div>
+        <div class="act-footer"><button class="copy-btn" data-target="act1">Copy</button></div>
+      </div>
+    </div>
+
+    <div class="act" id="act2">
+      <div class="act-label-col">
+        <span class="act-number">ACT II</span>
+        <svg class="act-flag" viewBox="0 0 16 16" fill="none">
+          <path d="M2 1V15" stroke="#1D1B22" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#7B6FD6"/>
+        </svg>
+      </div>
+      <div class="act-body-col">
+        <h3>The Debut</h3>
+        <div class="act-content"><span class="tag">X</span>
+I talk faster than I type. So I built an app that turns my voice notes into an actual diary. Driftnote is live today.
+
+<span class="tag">LinkedIn</span>
+Shipped Driftnote this weekend. A voice journal for people who process thoughts out loud, not on a page. Would love your first impressions.
+
+<span class="tag">TikTok hook</span>
+"I haven't written a journal entry in three years. Then I stopped trying to write one."</div>
+        <div class="act-footer"><button class="copy-btn" data-target="act2">Copy</button></div>
+      </div>
+    </div>
+
+    <div class="act" id="act3">
+      <div class="act-label-col">
+        <span class="act-number">ACT III</span>
+        <svg class="act-flag" viewBox="0 0 16 16" fill="none">
+          <path d="M2 1V15" stroke="#1D1B22" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#E2572B"/>
+        </svg>
+      </div>
+      <div class="act-body-col">
+        <h3>The Premiere</h3>
+        <div class="act-content"><span class="tag">Product Hunt</span>
+Driftnote: the diary for people who'd rather talk than type
+
+Most journaling apps assume you like writing. Driftnote doesn't. Speak for two minutes, get back a clean, readable entry. No formatting, no blank page, no excuses.
+
+Built solo this weekend. First 100 users get lifetime access.</div>
+        <div class="act-footer"><button class="copy-btn" data-target="act3">Copy</button></div>
+      </div>
+    </div>
+
+    <div class="act" id="act4">
+      <div class="act-label-col">
+        <span class="act-number">ACT IV</span>
+        <svg class="act-flag" viewBox="0 0 16 16" fill="none">
+          <path d="M2 1V15" stroke="#1D1B22" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M2 2C4 1.3 5.5 2.7 8 2C10.5 1.3 12 2.7 14 2V8C12 8.7 10.5 7.3 8 8C5.5 8.7 4 7.3 2 8V2Z" fill="#7B6FD6"/>
+        </svg>
+      </div>
+      <div class="act-body-col">
+        <h3>The Marquee</h3>
+        <div class="act-content"><span class="tag">Hero headline</span>
+Say it. Driftnote writes it down.
+
+<span class="tag">Subhead</span>
+A voice journal for people who think out loud. Talk for a minute, get back a diary entry you'd actually want to reread.</div>
+        <div class="act-footer"><button class="copy-btn" data-target="act4">Copy</button></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Fanfare, built for HackOnVibe, July 2026</span>
+    <span>Free while you're premiering. $9/mo after opening night.</span>
+    <div class="footer-social">
+      <a href="#" aria-label="Fanfare on X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-6.9l-5.4-6.6L4.8 22H1.7l8.1-9.3L1 2h7.1l4.9 6.1L18.9 2zm-1.2 18h1.9L7.4 3.9H5.4L17.7 20z"/></svg>
+      </a>
+      <a href="#" aria-label="Fanfare on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12c0 4.6 3 8.6 7.1 9.9.5.1.7-.2.7-.5v-1.9c-2.9.6-3.5-1.3-3.5-1.3-.5-1.2-1.1-1.6-1.1-1.6-1-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.2-4.7-5.2 0-1.1.4-2 1.1-2.8-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1.9-.2 1.8-.4 2.7-.4.9 0 1.8.1 2.7.4 2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.7 1.1 2.8 0 4-2.4 4.9-4.7 5.2.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 4.1-1.4 7.1-5.3 7.1-9.9 0-5.8-4.7-10.5-10.5-10.5z"/></svg>
+      </a>
+    </div>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const form = document.getElementById('launchForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const hintText = document.getElementById('hintText');
+  const programme = document.getElementById('programme');
+  const progMeta = document.getElementById('progMeta');
+  const acts = ['act1','act2','act3','act4'];
+
+  gsap.set('.act', { opacity: 0, y: 14 });
+  gsap.set('.act-flag', { opacity: 0, rotate: -35, transformOrigin: '15% 100%' });
+
+  gsap.from('.ticket', {
+    rotation: -16,
+    y: 46,
+    opacity: 0,
+    duration: 1.1,
+    delay: 0.8,
+    ease: 'back.out(1.5)'
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+
+    const appName = document.getElementById('appName').value || 'Your app';
+    progMeta.textContent = appName + ', opening night';
+    document.getElementById('ticketAppName').textContent = appName;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Drafting the programme<span class="dots"><span></span><span></span><span></span></span>';
+    hintText.textContent = 'Writing four acts, one at a time.';
+
+    setTimeout(function(){
+      programme.style.display = 'block';
+      programme.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      gsap.set('.act', { opacity: 0, y: 14 });
+      gsap.set('.act-flag', { opacity: 0, rotate: -35 });
+
+      const tl = gsap.timeline({
+        onComplete: function(){
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Announce again';
+          hintText.textContent = 'The programme is set. Adjust the details to run it again.';
+        }
+      });
+
+      acts.forEach(function(id, i){
+        const startTime = i * 0.45;
+        tl.to('#' + id, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, startTime);
+        tl.to('#' + id + ' .act-flag', { opacity: 1, rotate: 0, duration: 0.55, ease: 'back.out(2.2)' }, startTime + 0.12);
+      });
+
+    }, 900);
+  });
+
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const targetId = btn.getAttribute('data-target');
+      const text = document.querySelector('#' + targetId + ' .act-content').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        const original = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(function(){
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1400);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
