@@ -82,7 +82,7 @@ function buildUserPrompt({ appName, target, oneLiner, storeLink }) {
 
 export async function generateProgramme(formValues) {
   // TEMP: hardcoded for hackathon deploy, free-tier rate-limited key, rotate after judging
-  const apiKey = 'AQ.Ab8RN6JyTK6rIaMf9nMwdXoQWi7NDAQYz3D12U_rYcdRz168nw'
+  const apiKey = 'AQ.Ab8RN6IpPa7NvF85CDv0dJkafZw1hKQc5z1UfODkW3wN3jGeZg'
 
   if (!apiKey) {
     throw new Error('Missing Gemini API key. Add VITE_GEMINI_API_KEY to .env.local and restart the dev server.')
